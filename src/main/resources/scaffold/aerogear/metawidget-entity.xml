@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<metawidget xmlns="http://metawidget.org"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:processor="java:org.metawidget.statically.html.widgetprocessor"
+	xsi:schemaLocation="http://metawidget.org http://metawidget.org/xsd/metawidget-1.0.xsd
+						java:org.metawidget.inspector.composite http://metawidget.org/xsd/org.metawidget.inspector.composite-1.0.xsd"
+	version="1.0">
+
+	<!-- metawidget-entity.xml is used to generate both the read-only -->
+	<!-- and the editable version of the domain entity		          -->
+	
+	<staticHtmlMetawidget xmlns="java:org.metawidget.statically.html">
+	
+		<inspector>
+			<compositeInspector xmlns="java:org.metawidget.inspector.composite" config="CompositeInspectorConfig">
+				<inspectors>
+					<array>
+						<propertyTypeInspector xmlns="java:org.metawidget.inspector.propertytype" config="org.metawidget.inspector.impl.BaseObjectInspectorConfig">
+							<propertyStyle>
+								<forgePropertyStyle id="forgePropertyStyle" xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.inspector.propertystyle" config="ForgePropertyStyleConfig">
+									<project>
+										<forgeProject/>
+									</project>
+								</forgePropertyStyle>
+							</propertyStyle>
+						</propertyTypeInspector>
+						<forgeInspector xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.inspector" config="org.metawidget.inspector.impl.BaseObjectInspectorConfig">
+							<propertyStyle>
+								<forgePropertyStyle refId="forgePropertyStyle"/>
+							</propertyStyle>
+						</forgeInspector>
+						<jpaInspector xmlns="java:org.metawidget.inspector.jpa" config="JpaInspectorConfig">
+							<propertyStyle>
+								<forgePropertyStyle refId="forgePropertyStyle"/>
+							</propertyStyle>
+						</jpaInspector>
+						<beanValidationInspector xmlns="java:org.metawidget.inspector.beanvalidation" config="org.metawidget.inspector.impl.BaseObjectInspectorConfig">
+							<propertyStyle>
+								<forgePropertyStyle refId="forgePropertyStyle"/>
+							</propertyStyle>
+						</beanValidationInspector>
+					</array>
+				</inspectors>
+			</compositeInspector>
+		</inspector>
+		
+		<widgetProcessors>
+			<array>
+				<processor:cssStyleProcessor/>
+				<processor:idProcessor/>
+				<processor:nameProcessor/>				
+				<placeholderWidgetProcessor xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.widgetprocessor"/>
+			</array>
+		</widgetProcessors>
+
+		<layout>
+			<htmlDivLayout xmlns="java:org.metawidget.statically.html.layout"/>
+		</layout>
+
+	</staticHtmlMetawidget>
+
+</metawidget>

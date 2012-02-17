@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Forge</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<script type="text/javascript" src="../resources/js/jquery-1.6.4.js"></script>
+		<script type="text/javascript" src="../resources/js/jquery.mobile-1.0.min.js"></script>
+		<script type="text/javascript" src="../resources/js/forge-aerogear.js"></script>
+		<link rel="stylesheet" type="text/css" href="../resources/css/jquery.mobile-1.0.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../resources/css/forge-aerogear.css"/>
+	</head>
+	<body onload="aerogear.restUrl='../rest/@{ccEntity}'; aerogear.retrieve()">
+		<!-- Search -->
+		<article id="search-article" data-role="page">
+			<header data-role="header" data-theme="a">
+				<h3>Search @{entityName} entities</h3>
+			</header>
+			<section data-role="content">
+				<form name="search-form" id="search-form" data-ajax="false">
+					<fieldset>
+						@{searchMetawidget}
+						<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+							<input type="submit" name="search" onclick="return aerogear.retrieve()" data-icon="search" value="Search"/>
+						</div>
+					</fieldset>
+				</form>
+				@{serviceMetawidget}
+			</section>
+			<footer data-role="footer" data-position="fixed">
+				<div class="footer_left">
+					<a href="../index.html" data-role="button" data-icon="home">Home</a>
+				</div>
+				<div class="footer_right">
+					<a data-role="button" data-icon="plus" onclick="return aerogear.create()">Create</a>
+				</div>
+			</footer>
+		</article>
+
+		<!-- View -->
+		<article id="view-article" data-role="page">
+			<header data-role="header" data-theme="a">
+				<h3>View @{entityName}</h3>
+			</header>
+			<section data-role="content">
+				<fieldset id="view-fieldset">
+					@{viewMetawidget}
+					<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+						<a href="#create-article" data-role="button" data-icon="gear">Edit</a>
+						<a href="#search-article" data-role="button" data-icon="back">Cancel</a>
+					</div>
+				</fieldset>
+			</section>
+			<footer data-role="footer" data-position="fixed">
+				<div class="footer_left">
+					<a href="../index.html" data-role="button" data-icon="home">Home</a>
+				</div>
+				<div class="footer_right">
+					<a href="#search-article" data-role="button" data-icon="search">Search</a>
+					<a data-role="button" data-icon="plus" onclick="return aerogear.create()">Create</a>
+				</div>
+			</footer>
+		</article>
+
+		<!-- Create -->
+		<article id="create-article" data-role="page">
+			<header data-role="header" data-theme="a">
+				<h3>Create @{entityName}</h3>
+			</header>
+			<section data-role="content">
+				<form name="create-form" id="create-form" data-ajax="false">
+					<fieldset id="create-fieldset">
+						@{entityMetawidget}
+						<div id="formMsgs"></div>
+						<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+							<input type="submit" name="save" onclick="return aerogear.update()" data-icon="plus" value="Save"/>
+							<a data-role="button" data-icon="delete" onclick="return aerogear.remove()">Delete</a>
+							<a href="#search-article" data-role="button" data-icon="back">Cancel</a>
+						</div>
+					</fieldset>
+				</form>
+			</section>
+			<footer data-role="footer" data-position="fixed">
+				<div class="footer_left">
+					<a href="../index.html" data-role="button" data-icon="home">Home</a>
+				</div>
+				<div class="footer_right">
+					<a href="#search-article" data-role="button" data-icon="search">Search</a>
+				</div>
+			</footer>
+		</article>
+	</body>
+</html>
