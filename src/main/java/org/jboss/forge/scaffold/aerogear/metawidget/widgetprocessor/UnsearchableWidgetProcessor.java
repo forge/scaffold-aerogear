@@ -16,6 +16,8 @@
 
 package org.jboss.forge.scaffold.aerogear.metawidget.widgetprocessor;
 
+import static org.jboss.forge.scaffold.aerogear.metawidget.inspector.ForgeInspectionResultConstants.*;
+
 import java.util.Map;
 
 import org.metawidget.statically.StaticMetawidget;
@@ -111,6 +113,11 @@ public class UnsearchableWidgetProcessor
             {
                return true;
             }
+         }
+
+         if (attributes.containsKey(MANY_TO_ONE))
+         {
+            return true;
          }
       }
 

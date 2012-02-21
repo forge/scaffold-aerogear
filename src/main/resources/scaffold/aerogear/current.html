@@ -9,7 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="../resources/css/jquery.mobile-1.0.min.css"/>
 		<link rel="stylesheet" type="text/css" href="../resources/css/forge-aerogear.css"/>
 	</head>
-	<body onload="aerogear.restUrl='../rest/@{ccEntity}'; aerogear.retrieve()">
+	<body onload="aerogear.initialize('../rest/@{ccEntity}')">
 		<!-- Search -->
 		<article id="search-article" data-role="page">
 			<header data-role="header" data-theme="a">
@@ -20,7 +20,7 @@
 					<fieldset>
 						@{searchMetawidget}
 						<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
-							<input type="submit" name="search" onclick="return aerogear.retrieve()" data-icon="search" value="Search"/>
+							<input type="submit" name="search" onclick="return aerogear.search()" data-icon="search" value="Search"/>
 						</div>
 					</fieldset>
 				</form>

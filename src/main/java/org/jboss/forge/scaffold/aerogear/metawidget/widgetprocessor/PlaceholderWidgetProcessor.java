@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.metawidget.statically.StaticXmlMetawidget;
 import org.metawidget.statically.StaticXmlWidget;
-import org.metawidget.statically.html.widgetbuilder.NameHolder;
+import org.metawidget.statically.html.widgetbuilder.HtmlInput;
 import org.metawidget.util.simple.StringUtils;
 import org.metawidget.widgetprocessor.iface.WidgetProcessor;
 
@@ -43,7 +43,7 @@ public class PlaceholderWidgetProcessor
    public StaticXmlWidget processWidget(StaticXmlWidget widget, String elementName, Map<String, String> attributes,
             StaticXmlMetawidget metawidget)
    {
-      if (widget instanceof NameHolder)
+      if (widget instanceof HtmlInput)
       {
          widget.putAttribute("placeholder", "Your " + StringUtils.uncamelCase(attributes.get(NAME)));
       }

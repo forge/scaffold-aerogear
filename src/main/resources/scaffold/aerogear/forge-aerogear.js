@@ -2,12 +2,34 @@ var aerogear = {
 
 	restUrl: "rest/current",
 	current: {},
+	filter: {},
 
+	// Initialize
+	
+	initialize: function(restUrl) {
+		
+		aerogear.restUrl = restUrl;
+		
+		$('#create-form select, #search-form select').each(function(key,widget) {
+        	
+			var select = $(widget);
+			select.empty();
+			select.append($('<option/>'));
+
+			$.getJSON(aerogear.restUrl + '/../' + widget.dataset.rest, function(data) {
+				for(var key in data) {
+		        	select.append($('<option/>', { value : key, text: data[key] }));
+				}
+			});
+		});
+		
+		aerogear.retrieve();		
+	},
+		
 	// Create
 	
 	create: function() {
-		current = {};
-		$('#create-form')[0].reset();
+		aerogear.current = {};
 		$('span.invalid').remove();
 		$.mobile.changePage("#create-article");
 		return false;
@@ -17,32 +39,50 @@ var aerogear = {
 	
 	retrieve: function() {
 	    
-		$.getJSON(aerogear.restUrl, function(data) {
-			$('#pageItems tbody').empty();
-			$.each(data, function(index,member) {
-				var row = "<tr onclick='aerogear.load(";
-				row += member.id;
-				row += ")' id='row1' class='member' style='cursor: hand'>";					
-				$('#pageItems thead tr th').each(function(index,th) {
-					row += "<td>";
-					row += member[th.id.substring('pageItems-'.length)];
-					row += "</td>";
-				});
-				row += "</tr>";
-				$('#pageItems tbody').append(row);
-			});                    
-		});
+		$('#search-results tbody').empty();
+
+		$.ajax({
+            url: aerogear.restUrl + '/search',
+            type: 'POST',
+            data: JSON.stringify(aerogear.filter),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data) {
+     	   
+    			$.each(data, function(index,member) {
+    				var row = "<tr onclick='aerogear.load(";
+    				row += member.id;
+    				row += ")' id='row1' class='member' style='cursor: hand'>";					
+    				$('#search-results thead tr th').each(function(index,th) {
+    					row += "<td>";
+    					var value = member[th.id.substring('search-results-'.length)];
+    					if ( value != null ) {
+    						row += value;
+    					}
+    					row += "</td>";
+    				});
+    				row += "</tr>";
+    				$('#search-results tbody').append(row);
+    			});                    
+
+            }
+        });
 	},
+
+    search: function() {
+
+    	aerogear.serializeForm('#search-form', aerogear.filter);
+        aerogear.retrieve();
+        return false;
+    },
 
 	load: function( id ) {
 	    $.getJSON(aerogear.restUrl + '/' + id, function(data) {
-	        current = data;
-	        $.each(current, function(key, val) {
-	        	  $('#view-fieldset #' + key).html(val);
-	        	  $('#create-fieldset #' + key).val(val);
-				});
+	    	aerogear.current = data;
+	    	aerogear.deserializeForm(data, '#view-fieldset');
+	    	aerogear.deserializeForm(data, '#create-fieldset');
 	    });
-	    $('span.invalid').remove();
+		$('span.invalid').remove();
 	    $.mobile.changePage("#view-article");
 		return false;
 	},
@@ -51,27 +91,23 @@ var aerogear = {
 
     update: function() {
         $('span.invalid').remove();
-
-        $.each($('#create-form').serializeArray(), function() {
-            if (this.name!='save' && this.name!='delete') {
-            	current[this.name] = this.value;
-            }
-        });
+        aerogear.serializeForm('#create-form', aerogear.current);
 
         var url = aerogear.restUrl;
 
-		if ( current.id != null ) {
-			url += '/' + current.id;
+		if ( aerogear.current.id != null ) {
+			url += '/' + aerogear.current.id;
 		}
         
         $.ajax({
             url: url,
             type: 'PUT',
-            data: JSON.stringify(current),
+            data: JSON.stringify(aerogear.current),
             contentType: 'application/json',
             dataType: 'json',
             success: function(data) {
      	   
+            	aerogear.search = {};
             	aerogear.retrieve();
      	   		$.mobile.changePage("#search-article");
 
@@ -81,7 +117,7 @@ var aerogear = {
 
                     $.each(JSON.parse(error.responseText), function(key, val){
                        $('<span class="invalid">' + val + '</span>')
-                             .insertAfter($('#create-' + key));
+                             .insertAfter($('#create-fieldset #' + key));
                     });
                  } else {
                     $('#formMsgs').append($('<span class="invalid">Unknown server error</span>'));
@@ -92,19 +128,70 @@ var aerogear = {
         return false;
     },
 
-	// Delete
+    // Delete
 
     remove: function() {
 		$('span.invalid').remove();
 
 		$.ajax({
-			url: aerogear.restUrl + '/' + current.id,
+			url: aerogear.restUrl + '/' + aerogear.current.id,
 			type: 'DELETE',
 			success: function() {
 
+				aerogear.search = {};
 				aerogear.retrieve();
 				$.mobile.changePage("#search-article");
 			}
     	});
 	},
+
+    serializeForm: function(src,dest) {
+    	
+        $( src + ' input,' + src + ' select' ).each(function() {
+        	switch( this.type ) {
+        	
+    			case 'hidden':
+    			case 'submit':
+    				break;
+
+        		case 'checkbox':
+        			if ( this.checked ) {
+        				dest[this.name] = 'true';
+        			}
+        			break;
+
+        		default:
+        			if ( this.value != '' ) {
+        				dest[this.name] = this.value;
+        			}
+        	}        	
+        });
+    },
+
+    deserializeForm: function(src,dest) {
+    	
+        $.each(src, function(key,value) {
+        	$(dest + ' #' + key).each(function() {
+        		if ( this.nodeName == 'DIV' ) {
+        			this.innerHTML = value;
+        			return;
+        		}
+        		
+	        	switch( this.type ) {
+	        	
+	    			case 'hidden':
+	    			case 'submit':
+	    				break;
+	
+	        		case 'checkbox':
+	        			$(dest + ' #' + key).attr('checked', value).checkboxradio('refresh');
+	        			break;
+	
+	        		default:
+	        			this.value = value;
+	        	}
+        	});
+        });
+    },
+
 };

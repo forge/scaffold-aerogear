@@ -407,7 +407,12 @@ public class ForgePropertyStyle
       try
       {
          JavaSourceFacet javaSourceFact = this.project.getFacet(JavaSourceFacet.class);
-         return javaSourceFact.getJavaResource(type).getJavaSource();
+
+         // (strip generics)
+
+         String typeToUse = StringUtils.substringBefore(type, "<");
+
+         return javaSourceFact.getJavaResource(typeToUse).getJavaSource();
       }
       catch (FileNotFoundException e)
       {

@@ -41,8 +41,8 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
 {
-   //@Inject
-   //private WebTest webTest;
+   // @Inject
+   // private WebTest webTest;
 
    @Test
    public void testGenerate() throws Exception
@@ -112,6 +112,8 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
 
       // Search
 
+      Assert.assertTrue(contents.contains( "\t<body onload=\"aerogear.initialize('../rest/owner')\">" ));
+
       metawidget = "\t\t\t\t<form name=\"search-form\" id=\"search-form\" data-ajax=\"false\">\n" +
                "\t\t\t\t\t<fieldset>\n" +
                "\t\t\t\t\t\t<div>\r\n" +
@@ -127,27 +129,62 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
                "\t\t\t\t\t\t\t<input id=\"address\" name=\"address\" type=\"text\"/>\r\n" +
                "\t\t\t\t\t\t</div>\n" +
                "\t\t\t\t\t\t<div data-role=\"controlgroup\" data-type=\"horizontal\" style=\"text-align: center\">\n" +
-               "\t\t\t\t\t\t\t<input type=\"submit\" name=\"search\" onclick=\"return aerogear.retrieve()\" data-icon=\"search\" value=\"Search\"/>\n" +
+               "\t\t\t\t\t\t\t<input type=\"submit\" name=\"search\" onclick=\"return aerogear.search()\" data-icon=\"search\" value=\"Search\"/>\n" +
                "\t\t\t\t\t\t</div>\n" +
                "\t\t\t\t\t</fieldset>\n" +
                "\t\t\t\t</form>\n";
 
       Assert.assertTrue(contents.contains(metawidget));
 
-      metawidget = "\t\t\t\t<table id=\"pageItems\">\r\n" +
+      metawidget = "\t\t\t\t<table id=\"search-results\">\r\n" +
                "\t\t\t\t\t<thead>\r\n" +
                "\t\t\t\t\t\t<tr>\r\n" +
-               "\t\t\t\t\t\t\t<th id=\"pageItems-firstName\">First Name</th>\r\n" +
-               "\t\t\t\t\t\t\t<th id=\"pageItems-lastName\">Last Name</th>\r\n" +
-               "\t\t\t\t\t\t\t<th id=\"pageItems-address\">Address</th>\r\n" +
-               "\t\t\t\t\t\t\t<th id=\"pageItems-city\">City</th>\r\n" +
-               "\t\t\t\t\t\t\t<th id=\"pageItems-telephone\">Telephone</th>\r\n" +
+               "\t\t\t\t\t\t\t<th id=\"search-results-firstName\">First Name</th>\r\n" +
+               "\t\t\t\t\t\t\t<th id=\"search-results-lastName\">Last Name</th>\r\n" +
+               "\t\t\t\t\t\t\t<th id=\"search-results-address\">Address</th>\r\n" +
+               "\t\t\t\t\t\t\t<th id=\"search-results-city\">City</th>\r\n" +
+               "\t\t\t\t\t\t\t<th id=\"search-results-telephone\">Telephone</th>\r\n" +
                "\t\t\t\t\t\t</tr>\r\n" +
                "\t\t\t\t\t</thead>\r\n" +
                "\t\t\t\t\t<tbody/>\r\n" +
                "\t\t\t\t</table>\n";
 
       Assert.assertTrue(contents.contains(metawidget));
+
+      // View
+
+      metawidget = "\t\t\t\t<fieldset id=\"view-fieldset\">\n" +
+               "\t\t\t\t\t<div>\r\n" +
+               "\t\t\t\t\t\t<label for=\"firstName\">First Name:</label>\r\n" +
+               "\t\t\t\t\t\t<div id=\"firstName\"></div>\r\n" +
+               "\t\t\t\t\t</div>\r\n" +
+               "\t\t\t\t\t<div>\r\n" +
+               "\t\t\t\t\t\t<label for=\"lastName\">Last Name:</label>\r\n" +
+               "\t\t\t\t\t\t<div id=\"lastName\"></div>\r\n" +
+               "\t\t\t\t\t</div>\r\n" +
+               "\t\t\t\t\t<div>\r\n" +
+               "\t\t\t\t\t\t<label for=\"address\">Address:</label>\r\n" +
+               "\t\t\t\t\t\t<div id=\"address\"></div>\r\n" +
+               "\t\t\t\t\t</div>\r\n";
+
+      Assert.assertTrue(contents.contains(metawidget));
+
+      // pet.html
+
+      FileResource<?> pet = web.getWebResource("scaffold/pet.html");
+      Assert.assertTrue(pet.exists());
+      contents = Streams.toString(pet.getResourceInputStream());
+
+      Assert.assertTrue(contents.contains( "<select data-rest=\"owner\" id=\"owner\" name=\"owner\"></select>"));
+      Assert.assertTrue(!contents.contains( "<label for=\"pet-owner-firstName\">First Name:</label>"));
+
+      // visit.html
+
+      FileResource<?> visit = web.getWebResource("scaffold/visit.html");
+      Assert.assertTrue(visit.exists());
+      contents = Streams.toString(pet.getResourceInputStream());
+
+      Assert.assertTrue(contents.contains( "<select data-rest=\"owner\" id=\"owner\" name=\"owner\"></select>"));
 
       // Deploy to a real container and test
 

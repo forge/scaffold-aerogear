@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.persistence.Embedded;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -71,21 +72,22 @@ public class ForgeInspector
 
       // OneToOne
 
-      if ( property.isAnnotationPresent(OneToOne.class) || property.isAnnotationPresent(Embedded.class)) {
+      if (property.isAnnotationPresent(OneToOne.class) || property.isAnnotationPresent(Embedded.class))
+      {
 
          attributes.put(ONE_TO_ONE, TRUE);
       }
 
-      // OneToMany
+      // ManyToOne
 
-      if (property.isAnnotationPresent(OneToMany.class))
+      if (property.isAnnotationPresent(ManyToOne.class))
       {
-         attributes.put(N_TO_MANY, TRUE);
+         attributes.put(MANY_TO_ONE, TRUE);
       }
 
-      // ManyToMany
+      // OneToMany and ManyToMany
 
-      if (property.isAnnotationPresent(ManyToMany.class))
+      if (property.isAnnotationPresent(OneToMany.class) || property.isAnnotationPresent(ManyToMany.class))
       {
          attributes.put(N_TO_MANY, TRUE);
       }

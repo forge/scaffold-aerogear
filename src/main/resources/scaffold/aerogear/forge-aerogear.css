@@ -62,25 +62,25 @@ span.success {
    color: green;
 }
 
-#pageItems {
+#search-results {
    background-color: #E6E7E8;
    clear: both;
    width: 100%;
 }
 
-#pageItems td {
+#search-results td {
    height: 2em;
    padding-left: 6px;
    font-size: 11px;
 }
 
-#pageItems th {
+#search-results th {
    font-weight: normal;
    padding: 0 10px 0 5px;
    border-bottom: #999999 dotted 1px;
 }
 
-#pageItems thead {
+#search-results thead {
 
    font-weight: bold;
    color: #FFFFFF;
@@ -88,7 +88,7 @@ span.success {
    text-align: left;
 }
 
-#pageItems tfoot {
+#search-results tfoot {
    height: 20px;
    font-weight: bold;
    background-color: #EAECEE;
@@ -96,15 +96,15 @@ span.success {
 }
 
 /* Using new CSS3 selectors for styling*/
-#pageItems tbody tr:nth-child(odd) {
+#search-results tbody tr:nth-child(odd) {
    background: #f4f3f3;
 }
 
-#pageItems tbody tr:nth-child(even) {
+#search-results tbody tr:nth-child(even) {
    background: #ffffff;
 }
 
-#pageItems tbody tr:hover {
+#search-results tbody tr:hover {
    background: #d2e8f2;
    cursor: pointer;
 }

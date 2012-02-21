@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.jboss.forge.parser.JavaParser;
@@ -37,11 +36,12 @@ import org.jboss.forge.parser.java.JavaClass;
 import org.jboss.forge.parser.xml.Node;
 import org.jboss.forge.parser.xml.XMLParser;
 import org.jboss.forge.project.Project;
-import org.jboss.forge.project.facets.BaseFacet;
+import org.jboss.forge.project.dependencies.Dependency;
+import org.jboss.forge.project.dependencies.DependencyBuilder;
+import org.jboss.forge.project.dependencies.DependencyInstaller;
 import org.jboss.forge.project.facets.DependencyFacet;
 import org.jboss.forge.project.facets.JavaSourceFacet;
 import org.jboss.forge.project.facets.WebResourceFacet;
-import org.jboss.forge.project.facets.events.InstallFacets;
 import org.jboss.forge.resources.FileResource;
 import org.jboss.forge.resources.Resource;
 import org.jboss.forge.scaffold.AccessStrategy;
@@ -52,10 +52,10 @@ import org.jboss.forge.scaffold.util.ScaffoldUtil;
 import org.jboss.forge.shell.ShellPrompt;
 import org.jboss.forge.shell.plugins.Alias;
 import org.jboss.forge.shell.plugins.RequiresFacet;
+import org.jboss.forge.spec.javaee.BaseJavaEEFacet;
 import org.jboss.forge.spec.javaee.CDIFacet;
 import org.jboss.forge.spec.javaee.EJBFacet;
 import org.jboss.forge.spec.javaee.PersistenceFacet;
-import org.jboss.forge.spec.javaee.RestFacet;
 import org.jboss.forge.spec.javaee.ServletFacet;
 import org.jboss.forge.spec.javaee.ValidationFacet;
 import org.jboss.seam.render.TemplateCompiler;
@@ -87,9 +87,8 @@ import org.metawidget.util.simple.StringUtils;
          PersistenceFacet.class,
          EJBFacet.class,
          CDIFacet.class,
-         RestFacet.class,
          ValidationFacet.class })
-public class AeroGearScaffold extends BaseFacet implements ScaffoldProvider
+public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvider
 {
    //
    // Private statics
@@ -122,7 +121,6 @@ public class AeroGearScaffold extends BaseFacet implements ScaffoldProvider
 
    protected final ShellPrompt prompt;
    protected final TemplateCompiler compiler;
-   protected final Event<InstallFacets> install;
    protected StaticHtmlMetawidget entityMetawidget;
    protected StaticHtmlMetawidget searchMetawidget;
    protected StaticHtmlMetawidget serviceMetawidget;
@@ -135,11 +133,12 @@ public class AeroGearScaffold extends BaseFacet implements ScaffoldProvider
    @Inject
    public AeroGearScaffold(final ShellPrompt prompt,
             final TemplateCompiler compiler,
-            final Event<InstallFacets> install)
+            final DependencyInstaller installer)
    {
+      super(installer);
+
       this.prompt = prompt;
       this.compiler = compiler;
-      this.install = install;
 
       this.resolver = new ClassLoaderTemplateResolver(AeroGearScaffold.class.getClassLoader());
 
@@ -239,7 +238,8 @@ public class AeroGearScaffold extends BaseFacet implements ScaffoldProvider
          writeMetawidget(context, "viewMetawidget", this.entityMetawidget, this.currentTemplateViewMetawidgetIndent);
          this.searchMetawidget.setPath(entity.getQualifiedName());
          writeMetawidget(context, "searchMetawidget", this.searchMetawidget, this.currentTemplateSearchMetawidgetIndent);
-         this.serviceMetawidget.setPath(serviceBean.getQualifiedName() + "/pageItems");
+         this.serviceMetawidget.setId("search-results");
+         this.serviceMetawidget.setPath("java.util.List<" + entity.getQualifiedName() + ">");
          writeMetawidget(context, "serviceMetawidget", this.serviceMetawidget,
                   this.currentTemplateServiceMetawidgetIndent);
 
@@ -264,25 +264,17 @@ public class AeroGearScaffold extends BaseFacet implements ScaffoldProvider
       return result;
    }
 
-   @Override
-   @SuppressWarnings("unchecked")
-   public boolean install()
-   {
-      if (!(this.project.hasFacet(WebResourceFacet.class) && this.project.hasFacet(PersistenceFacet.class)
-               && this.project.hasFacet(CDIFacet.class) && this.project.hasFacet(RestFacet.class) && this.project
-               .hasFacet(ValidationFacet.class)))
-      {
-         this.install.fire(new InstallFacets(WebResourceFacet.class, PersistenceFacet.class, CDIFacet.class,
-                  RestFacet.class, ValidationFacet.class));
-      }
-
-      return true;
-   }
+   /**
+    * Overridden to require JAX-RS dependencies.
+    */
 
    @Override
-   public boolean isInstalled()
+   protected List<Dependency> getRequiredDependencies()
    {
-      return true;
+      return Arrays.asList(
+               (Dependency) DependencyBuilder.create("org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_1.1_spec"),
+               DependencyBuilder.create("org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.2_spec")
+               );
    }
 
    @Override

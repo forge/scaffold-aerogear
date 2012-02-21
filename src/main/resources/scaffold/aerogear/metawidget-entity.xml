@@ -44,6 +44,18 @@
 			</compositeInspector>
 		</inspector>
 		
+		<widgetBuilder>
+			<compositeWidgetBuilder xmlns="java:org.metawidget.widgetbuilder.composite" config="CompositeWidgetBuilderConfig">
+				<widgetBuilders>
+					<array>
+						<entityWidgetBuilder xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.widgetbuilder"/>
+						<readOnlyWidgetBuilder xmlns="java:org.metawidget.statically.html.widgetbuilder"/>
+						<htmlWidgetBuilder xmlns="java:org.metawidget.statically.html.widgetbuilder"/>
+					</array>
+				</widgetBuilders>
+			</compositeWidgetBuilder>
+		</widgetBuilder>
+		
 		<widgetProcessors>
 			<array>
 				<processor:cssStyleProcessor/>

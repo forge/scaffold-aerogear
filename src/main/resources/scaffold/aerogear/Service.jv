@@ -11,7 +11,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -122,17 +121,6 @@ public class @{entity.getName()}Service {
 	 * Support searching @{entity.getName()} entities
 	 */
 	 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<@{entity.getName()}> getPageItems() {
-		
-		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();		
-		CriteriaQuery<@{entity.getName()}> criteria = builder.createQuery(@{entity.getName()}.class);
-		Root<@{entity.getName()}> root = criteria.from(@{entity.getName()}.class);
-		TypedQuery<@{entity.getName()}> query = this.entityManager.createQuery(criteria.select(root));
-		return query.getResultList();
-	}
-
 	@POST
 	@Path("/search")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -142,12 +130,15 @@ public class @{entity.getName()}Service {
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();		
 		CriteriaQuery<@{entity.getName()}> criteria = builder.createQuery(@{entity.getName()}.class);
 		Root<@{entity.getName()}> root = criteria.from(@{entity.getName()}.class);
-		TypedQuery<@{entity.getName()}> query = this.entityManager.createQuery(criteria
-				.select(root)
-				.where(getSearchPredicates(root, search)));
-		return query.getResultList();
+		criteria = criteria.select(root);
+		
+		if ( search != null ) {
+			criteria = criteria.where(getSearchPredicates(root, search));
+		}
+		
+		return this.entityManager.createQuery(criteria).getResultList();
 	}
-	 
+
 	private Predicate[] getSearchPredicates(Root<@{entity.getName()}> root, @{entity.getName()} search) {
 
 		CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -156,5 +147,23 @@ public class @{entity.getName()}Service {
 		@{qbeMetawidget}
 
 		return predicatesList.toArray(new Predicate[predicatesList.size()]);
+	}
+
+	/*
+	 * Support listing and POSTing back @{entity.getName()} entities (e.g. from inside a
+	 * &lt;select&gt;)
+	 */
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Map<Long,String> getAll() {
+		
+		Map<Long,String> all = new HashMap<Long,String>();
+		
+		for( @{entity.getName()} item : getPageItems( null )) {
+			all.put(item.getId(), item.toString());
+		}
+		
+		return all;
 	}
 }
