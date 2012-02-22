@@ -16,6 +16,7 @@
 
 package org.jboss.forge.scaffold.aerogear.metawidget.widgetbuilder;
 
+import static org.jboss.forge.scaffold.aerogear.metawidget.inspector.ForgeInspectionResultConstants.*;
 import static org.metawidget.inspector.InspectionResultConstants.*;
 
 import java.util.Map;
@@ -81,6 +82,22 @@ public class QueryByExampleWidgetBuilder
          toReturn.getChildren().add(
                   new JavaStatement("int " + name + " = search.get" + StringUtils.capitalize(name) + "()"));
          JavaStatement ifNotEmpty = new JavaStatement("if (" + name + " != 0)");
+         ifNotEmpty.getChildren().add(
+                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
+         toReturn.getChildren().add(ifNotEmpty);
+         return toReturn;
+      }
+
+      // Lookup
+
+      if (attributes.containsKey(MANY_TO_ONE))
+      {
+         StaticJavaStub toReturn = new StaticJavaStub();
+         JavaStatement getValue = new JavaStatement(ClassUtils.getSimpleName(type) + " " + name + " = search.get"
+                  + StringUtils.capitalize(name) + "()");
+         getValue.putImport(type);
+         toReturn.getChildren().add(getValue);
+         JavaStatement ifNotEmpty = new JavaStatement("if (" + name + " != null && " + name + ".getId() != null)");
          ifNotEmpty.getChildren().add(
                   new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
          toReturn.getChildren().add(ifNotEmpty);

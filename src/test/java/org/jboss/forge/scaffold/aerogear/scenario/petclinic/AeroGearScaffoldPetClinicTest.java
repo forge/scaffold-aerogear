@@ -96,10 +96,10 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
       String contents = Streams.toString(index.getResourceInputStream());
 
       String metawidget = "\t\t\t\t<nav>\r\n" +
-               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/owner.html\">Owner</a>\r\n" +
-               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/pet.html\">Pet</a>\r\n" +
-               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/vet.html\">Vet</a>\r\n" +
-               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/visit.html\">Visit</a>\r\n" +
+               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/owner.html\" rel=\"external\">Owner</a>\r\n" +
+               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/pet.html\" rel=\"external\">Pet</a>\r\n" +
+               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/vet.html\" rel=\"external\">Vet</a>\r\n" +
+               "\t\t\t\t\t<a data-role=\"button\" href=\"scaffold/visit.html\" rel=\"external\">Visit</a>\r\n" +
                "\t\t\t\t</nav>";
 
       Assert.assertTrue(contents.contains(metawidget));
@@ -185,6 +185,15 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
       contents = Streams.toString(pet.getResourceInputStream());
 
       Assert.assertTrue(contents.contains( "<select data-rest=\"owner\" id=\"owner\" name=\"owner\"></select>"));
+
+      // pom.xml
+
+      FileResource<?> pom = (FileResource<?>) project.getProjectRoot().getChild("pom.xml");
+      Assert.assertTrue(pom.exists());
+      contents = Streams.toString(pom.getResourceInputStream());
+
+      Assert.assertTrue(contents.contains( "<artifactId>jackson-jaxrs</artifactId>" ));
+      Assert.assertTrue(contents.contains( "<version>1.6.3</version>" ));
 
       // Deploy to a real container and test
 

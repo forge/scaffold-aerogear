@@ -1,0 +1,59 @@
+
+import java.io.IOException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
+
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.deser.BeanDeserializer;
+import org.codehaus.jackson.map.deser.CustomDeserializerFactory;
+import org.codehaus.jackson.map.deser.StdDeserializerProvider;
+import org.codehaus.jackson.map.introspect.BasicBeanDescription;
+import org.codehaus.jackson.type.JavaType;
+
+/**
+ * Custom JSON ObjectMapper that knows how to lookup JPA entities based on ids.
+ */
+
+@Provider
+public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
+	private final ObjectMapper mapper;
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	public ObjectMapperProvider() {
+
+		this.mapper = new ObjectMapper();
+		this.mapper.setDeserializerProvider(new StdDeserializerProvider(
+				new CustomDeserializerFactory() {
+
+					protected BeanDeserializer constructBeanDeserializerInstance(
+							DeserializationConfig config, JavaType type,
+							BasicBeanDescription beanDesc) {
+
+						return new BeanDeserializer(type) {
+							public Object deserializeFromString(JsonParser jp,
+									DeserializationContext ctxt)
+									throws IOException, JsonProcessingException {
+
+								return ObjectMapperProvider.this.entityManager
+										.find(this.getBeanClass(),
+												Long.valueOf(jp.getText()));
+							}
+						};
+					}
+				}));
+	}
+
+	@Override
+	public ObjectMapper getContext(Class<?> type) {
+		return this.mapper;
+	}
+}

@@ -95,6 +95,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    //
 
    private static final String ACTIVATOR_TEMPLATE = "scaffold/aerogear/JaxRsActivator.jv";
+   private static final String OBJECT_MAPPER_PROVIDER_TEMPLATE = "scaffold/aerogear/ObjectMapperProvider.jv";
    private static final String SERVICE_TEMPLATE = "scaffold/aerogear/Service.jv";
    private static final String CURRENT_TEMPLATE = "scaffold/aerogear/current.html";
    private static final String INDEX_TEMPLATE = "scaffold/aerogear/index.html";
@@ -113,6 +114,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    protected int currentTemplateServiceMetawidgetIndent;
 
    protected CompiledTemplateResource activatorTemplate;
+   protected CompiledTemplateResource objectMapperProviderTemplate;
 
    protected CompiledTemplateResource indexTemplate;
    protected int indexTemplateIndent;
@@ -254,6 +256,14 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
          result.add(ScaffoldUtil.createOrOverwrite(this.prompt, java.getJavaResource(activator), activator.toString(),
                   true));
 
+         // Generate ObjectMapperProviderTemplate.jv
+         JavaClass objectMapperProvider = JavaParser.parse(JavaClass.class,
+                  this.objectMapperProviderTemplate.render(context));
+         objectMapperProvider.setPackage(serviceBean.getPackage());
+         result.add(ScaffoldUtil.createOrOverwrite(this.prompt, java.getJavaResource(objectMapperProvider),
+                  objectMapperProvider.toString(),
+                  true));
+
          // Generate index.html
          result.add(generateIndex(overwrite));
       }
@@ -273,7 +283,8 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    {
       return Arrays.asList(
                (Dependency) DependencyBuilder.create("org.jboss.spec.javax.ws.rs:jboss-jaxrs-api_1.1_spec"),
-               DependencyBuilder.create("org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.2_spec")
+               DependencyBuilder.create("org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.2_spec"),
+               DependencyBuilder.create("org.codehaus.jackson:jackson-jaxrs:1.6.3")
                );
    }
 
@@ -329,6 +340,10 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
                web.getWebResource("/resources/js/jquery.mobile-1.0.min.js"),
                getClass().getResourceAsStream("/scaffold/aerogear/jquery.mobile-1.0.min.js"), overwrite));
 
+      result.add(ScaffoldUtil.createOrOverwrite(this.prompt,
+               web.getWebResource("/resources/META-INF/MANIFEST.MF"),
+               getClass().getResourceAsStream("/scaffold/aerogear/MANIFEST.MF"), overwrite));
+
       return result;
    }
 
@@ -372,6 +387,10 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
       if (this.activatorTemplate == null)
       {
          this.activatorTemplate = this.compiler.compile(ACTIVATOR_TEMPLATE);
+      }
+      if (this.objectMapperProviderTemplate == null)
+      {
+         this.objectMapperProviderTemplate = this.compiler.compile(OBJECT_MAPPER_PROVIDER_TEMPLATE);
       }
       if (this.currentTemplate == null)
       {
@@ -429,6 +448,11 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
          HtmlTag anchor = new HtmlTag("a");
          anchor.putAttribute("href", scaffold.getName() + '/' + resource.getName());
          anchor.putAttribute("data-role", "button");
+
+         // Using rel='external' ensures our 'onload' gets called. This is much cleaner than using 'pageshow'. It also
+         // makes the sub-pages bookmarkable
+
+         anchor.putAttribute("rel", "external");
          anchor.setTextContent(StringUtils.uncamelCase(StringUtils.substringBefore(resource.getName(), ".html")));
 
          nav.getChildren().add(anchor);

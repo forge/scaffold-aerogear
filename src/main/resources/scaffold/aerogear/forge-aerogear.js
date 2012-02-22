@@ -30,6 +30,7 @@ var aerogear = {
 	
 	create: function() {
 		aerogear.current = {};
+		$('#create-form')[0].reset();
 		$('span.invalid').remove();
 		$.mobile.changePage("#create-article");
 		return false;
@@ -63,8 +64,7 @@ var aerogear = {
     				});
     				row += "</tr>";
     				$('#search-results tbody').append(row);
-    			});                    
-
+    			});
             }
         });
 	},
@@ -107,7 +107,7 @@ var aerogear = {
             dataType: 'json',
             success: function(data) {
      	   
-            	aerogear.search = {};
+            	aerogear.filter = {};
             	aerogear.retrieve();
      	   		$.mobile.changePage("#search-article");
 
@@ -133,18 +133,27 @@ var aerogear = {
     remove: function() {
 		$('span.invalid').remove();
 
+		if ( !confirm( 'OK to delete?' )) {
+			return;
+		}
+		
 		$.ajax({
 			url: aerogear.restUrl + '/' + aerogear.current.id,
 			type: 'DELETE',
 			success: function() {
 
-				aerogear.search = {};
+				aerogear.filter = {};
 				aerogear.retrieve();
 				$.mobile.changePage("#search-article");
-			}
+			},
+	    	error: function(error) {
+               $('#formMsgs').append($('<span class="invalid">Unknown server error</span>'));
+	    	}
     	});
 	},
 
+	// Internal functions
+	
     serializeForm: function(src,dest) {
     	
         $( src + ' input,' + src + ' select' ).each(function() {
@@ -161,7 +170,9 @@ var aerogear = {
         			break;
 
         		default:
-        			if ( this.value != '' ) {
+        			if ( this.value == '' ) {
+        				dest[this.name] = null;
+        			} else {
         				dest[this.name] = this.value;
         			}
         	}        	
@@ -177,7 +188,17 @@ var aerogear = {
         			return;
         		}
         		
-	        	switch( this.type ) {
+        		if ( this.nodeName == 'SELECT' ) {
+        			if (value == null) {
+        				value = '';
+        			} else {
+        				value = value.id;
+        			}
+        			$(dest + ' #' + key).val(value).selectmenu('refresh');
+        			return;
+        		}
+        		
+    			switch( this.type ) {
 	        	
 	    			case 'hidden':
 	    			case 'submit':
