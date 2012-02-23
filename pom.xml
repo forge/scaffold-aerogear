@@ -34,6 +34,12 @@
 		</dependency>		
 		<dependency>
 			<groupId>org.jboss.forge</groupId>
+			<artifactId>forge-javaee-impl</artifactId>
+			<version>${forge.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.forge</groupId>
 			<artifactId>forge-shell-api</artifactId>
 			<version>${forge.version}</version>
 			<scope>provided</scope>
@@ -42,7 +48,7 @@
 			<groupId>org.jboss.seam.render</groupId>
 			<artifactId>seam-render</artifactId>
 			<version>1.0.0.Alpha6</version>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.metawidget.modules</groupId>
@@ -61,12 +67,6 @@
 		<dependency>
 			<groupId>org.jboss.forge</groupId>
 			<artifactId>forge-shell</artifactId>
-			<version>${forge.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.forge</groupId>
-			<artifactId>forge-javaee-impl</artifactId>
 			<version>${forge.version}</version>
 			<scope>test</scope>
 		</dependency>
