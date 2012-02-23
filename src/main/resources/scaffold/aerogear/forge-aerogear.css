@@ -47,6 +47,8 @@ a:hover {
    text-decoration: none;
 }
 
+/* Content styles */
+
 .ui-mobile fieldset{
    padding-left: 5px;
    padding-right: 5px;
@@ -109,7 +111,7 @@ span.success {
    cursor: pointer;
 }
 
-/* Hide Desktop Items */
-section > h1, article > h2, aside > h3, footer, .desktop-only {
-	display: none;
+#view-fieldset output {
+	font-size: 1.25em;
+	padding-bottom: 10px;
 }

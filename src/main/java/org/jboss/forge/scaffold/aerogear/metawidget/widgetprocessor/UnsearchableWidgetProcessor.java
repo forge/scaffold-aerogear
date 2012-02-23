@@ -109,7 +109,7 @@ public class UnsearchableWidgetProcessor
          {
             Class<?> clazz = ClassUtils.niceForName(type);
 
-            if (String.class.equals(clazz) || int.class.equals(clazz))
+            if (String.class.equals(clazz))
             {
                return true;
             }

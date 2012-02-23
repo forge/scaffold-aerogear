@@ -55,7 +55,7 @@ public class UnsearchableWidgetProcessorTest
       assertTrue(widgetProcessor.processWidget(new HtmlInput(), PROPERTY, attributes, metawidget) != null);
 
       attributes.put(TYPE, int.class.getName());
-      assertTrue(widgetProcessor.processWidget(new HtmlInput(), PROPERTY, attributes, metawidget) != null);
+      assertTrue(widgetProcessor.processWidget(new HtmlInput(), PROPERTY, attributes, metawidget) == null);
    }
 
    public void testSuppressWrongType()

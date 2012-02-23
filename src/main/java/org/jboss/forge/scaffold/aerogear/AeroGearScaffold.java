@@ -341,7 +341,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
                getClass().getResourceAsStream("/scaffold/aerogear/jquery.mobile-1.0.min.js"), overwrite));
 
       result.add(ScaffoldUtil.createOrOverwrite(this.prompt,
-               web.getWebResource("/resources/META-INF/MANIFEST.MF"),
+               web.getWebResource("../resources/META-INF/MANIFEST.MF"),
                getClass().getResourceAsStream("/scaffold/aerogear/MANIFEST.MF"), overwrite));
 
       return result;

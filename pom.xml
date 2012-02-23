@@ -39,12 +39,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jboss.forge</groupId>
-			<artifactId>forge-javaee-api</artifactId>
-			<version>${forge.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.jboss.seam.render</groupId>
 			<artifactId>seam-render</artifactId>
 			<version>1.0.0.Alpha6</version>

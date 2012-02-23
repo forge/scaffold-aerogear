@@ -60,6 +60,7 @@
 				<processor:idProcessor/>
 				<processor:nameProcessor/>
 				<unsearchableWidgetProcessor xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.widgetprocessor"/>
+				<searchInputWidgetProcessor xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.widgetprocessor"/>
 			</array>
 		</widgetProcessors>
 

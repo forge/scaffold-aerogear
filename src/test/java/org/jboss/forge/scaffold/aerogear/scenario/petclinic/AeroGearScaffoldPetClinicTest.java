@@ -118,15 +118,15 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
                "\t\t\t\t\t<fieldset>\n" +
                "\t\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t\t<label for=\"firstName\">First Name:</label>\r\n" +
-               "\t\t\t\t\t\t\t<input id=\"firstName\" name=\"firstName\" type=\"text\"/>\r\n" +
+               "\t\t\t\t\t\t\t<input id=\"firstName\" name=\"firstName\" type=\"search\"/>\r\n" +
                "\t\t\t\t\t\t</div>\r\n" +
                "\t\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t\t<label for=\"lastName\">Last Name:</label>\r\n" +
-               "\t\t\t\t\t\t\t<input id=\"lastName\" name=\"lastName\" type=\"text\"/>\r\n" +
+               "\t\t\t\t\t\t\t<input id=\"lastName\" name=\"lastName\" type=\"search\"/>\r\n" +
                "\t\t\t\t\t\t</div>\r\n" +
                "\t\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t\t<label for=\"address\">Address:</label>\r\n" +
-               "\t\t\t\t\t\t\t<input id=\"address\" name=\"address\" type=\"text\"/>\r\n" +
+               "\t\t\t\t\t\t\t<input id=\"address\" name=\"address\" type=\"search\"/>\r\n" +
                "\t\t\t\t\t\t</div>\n" +
                "\t\t\t\t\t\t<div data-role=\"controlgroup\" data-type=\"horizontal\" style=\"text-align: center\">\n" +
                "\t\t\t\t\t\t\t<input type=\"submit\" name=\"search\" onclick=\"return aerogear.search()\" data-icon=\"search\" value=\"Search\"/>\n" +
@@ -156,15 +156,15 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
       metawidget = "\t\t\t\t<fieldset id=\"view-fieldset\">\n" +
                "\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t<label for=\"firstName\">First Name:</label>\r\n" +
-               "\t\t\t\t\t\t<div id=\"firstName\"></div>\r\n" +
+               "\t\t\t\t\t\t<output id=\"firstName\" name=\"firstName\"></output>\r\n" +
                "\t\t\t\t\t</div>\r\n" +
                "\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t<label for=\"lastName\">Last Name:</label>\r\n" +
-               "\t\t\t\t\t\t<div id=\"lastName\"></div>\r\n" +
+               "\t\t\t\t\t\t<output id=\"lastName\" name=\"lastName\"></output>\r\n" +
                "\t\t\t\t\t</div>\r\n" +
                "\t\t\t\t\t<div>\r\n" +
                "\t\t\t\t\t\t<label for=\"address\">Address:</label>\r\n" +
-               "\t\t\t\t\t\t<div id=\"address\"></div>\r\n" +
+               "\t\t\t\t\t\t<output id=\"address\" name=\"address\"></output>\r\n" +
                "\t\t\t\t\t</div>\r\n";
 
       Assert.assertTrue(contents.contains(metawidget));
