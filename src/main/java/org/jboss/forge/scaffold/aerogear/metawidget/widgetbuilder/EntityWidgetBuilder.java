@@ -29,6 +29,7 @@ import java.util.Map;
 import org.metawidget.statically.StaticXmlMetawidget;
 import org.metawidget.statically.StaticXmlStub;
 import org.metawidget.statically.StaticXmlWidget;
+import org.metawidget.statically.html.widgetbuilder.HtmlOutput;
 import org.metawidget.statically.html.widgetbuilder.HtmlSelect;
 import org.metawidget.util.ClassUtils;
 import org.metawidget.util.WidgetBuilderUtils;
@@ -36,7 +37,7 @@ import org.metawidget.util.simple.StringUtils;
 import org.metawidget.widgetbuilder.iface.WidgetBuilder;
 
 /**
- * Builds widgets with Forge-specific behaviours (such as links to other scaffolding pages).
+ * Builds widgets with Forge-specific behaviours (such as AJAX lookups).
  *
  * @author Richard Kennard
  */
@@ -60,12 +61,20 @@ public class EntityWidgetBuilder
       }
 
       String type = WidgetBuilderUtils.getActualClassOrType(attributes);
+      String restLookup = attributes.get(MANY_TO_ONE);
 
-      if (!WidgetBuilderUtils.isReadOnly(attributes))
+      if (WidgetBuilderUtils.isReadOnly(attributes))
+      {
+         // Read-only REST_LOOKUP
+
+         if (restLookup != null)
+         {
+            return new HtmlOutput();
+         }
+      }
+      else
       {
          // Non read-only REST_LOOKUP
-
-         String restLookup = attributes.get(MANY_TO_ONE);
 
          if (restLookup != null)
          {

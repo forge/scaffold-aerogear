@@ -16,10 +16,10 @@ var aerogear = {
 			select.empty();
 			select.append($('<option/>'));
 
-			$.getJSON(aerogear.restUrl + '/../' + widget.dataset.rest, function(data) {
-				for(var key in data) {
-		        	select.append($('<option/>', { value : key, text: data[key] }));
-				}
+			$.getJSON(aerogear.restUrl + '/../' + widget.dataset.rest, function(list) {
+				$.each(list, function(index,data) {
+					select.append($('<option/>', { value : data.id, text: data.toString }));
+				});
 			});
 		});
 		
@@ -29,10 +29,12 @@ var aerogear = {
 	// Create
 	
 	create: function() {
+		$.mobile.changePage("#create-article");
 		aerogear.current = {};
 		$('#create-form')[0].reset();
+		$('#create-form input[type="checkbox"]').attr('checked',false).checkboxradio('refresh');
+		$('#create-form select').val(null).selectmenu('refresh');		
 		$('span.invalid').remove();
-		$.mobile.changePage("#create-article");
 		return false;
 	},
 	
@@ -48,17 +50,21 @@ var aerogear = {
             data: JSON.stringify(aerogear.filter),
             contentType: 'application/json',
             dataType: 'json',
-            success: function(data) {
-     	   
-    			$.each(data, function(index,member) {
+            success: function(list) {
+    			$.each(list, function(index,data) {
     				var row = "<tr onclick='aerogear.load(";
-    				row += member.id;
-    				row += ")' id='row1' class='member' style='cursor: hand'>";					
-    				$('#search-results thead tr th').each(function(index,th) {
+    				row += data.id;
+    				row += ")'>";					
+    				$('#search-results thead tr th').each(function(tr,th) {
     					row += "<td>";
-    					var value = member[th.id.substring('search-results-'.length)];
+    					var key = th.id.substring('search-results-'.length);
+    					var value = data[key];
     					if ( value != null ) {
-    						row += value;
+	    					if ( typeof value == 'object' ) {
+	    						row += value.toString;
+	    					} else {
+	   							row += value.toString();
+	    					}
     					}
     					row += "</td>";
     				});
@@ -71,7 +77,7 @@ var aerogear = {
 
     search: function() {
 
-    	aerogear.serializeForm('#search-form', aerogear.filter);
+    	aerogear.serializeFromForm('#search-form', aerogear.filter);
         aerogear.retrieve();
         return false;
     },
@@ -79,8 +85,8 @@ var aerogear = {
 	load: function( id ) {
 	    $.getJSON(aerogear.restUrl + '/' + id, function(data) {
 	    	aerogear.current = data;
-	    	aerogear.deserializeForm(data, '#view-fieldset');
-	    	aerogear.deserializeForm(data, '#create-fieldset');
+	    	aerogear.serializeToForm(data, '#view-fieldset');
+	    	aerogear.serializeToForm(data, '#create-fieldset');
 	    });
 		$('span.invalid').remove();
 	    $.mobile.changePage("#view-article");
@@ -91,7 +97,7 @@ var aerogear = {
 
     update: function() {
         $('span.invalid').remove();
-        aerogear.serializeForm('#create-form', aerogear.current);
+        aerogear.serializeFromForm('#create-form', aerogear.current);
 
         var url = aerogear.restUrl;
 
@@ -154,7 +160,7 @@ var aerogear = {
 
 	// Internal functions
 	
-    serializeForm: function(src,dest) {
+    serializeFromForm: function(src,dest) {
     	
         $( src + ' input,' + src + ' select' ).each(function() {
         	switch( this.type ) {
@@ -166,6 +172,8 @@ var aerogear = {
         		case 'checkbox':
         			if ( this.checked ) {
         				dest[this.name] = 'true';
+        			} else {
+        				dest[this.name] = 'false';
         			}
         			break;
 
@@ -173,21 +181,21 @@ var aerogear = {
         			if ( this.value == '' ) {
         				dest[this.name] = null;
         			} else {
-        				dest[this.name] = this.value;
+    					if ( typeof this.value == 'object' ) {
+            				dest[this.name] = this.value.toString;
+    					} else {
+            				dest[this.name] = this.value;
+    					}
         			}
         	}        	
         });
     },
 
-    deserializeForm: function(src,dest) {
+    serializeToForm: function(src,dest) {
     	
         $.each(src, function(key,value) {
         	$(dest + ' #' + key).each(function() {
-        		if ( this.nodeName == 'DIV' ) {
-        			this.innerHTML = value;
-        			return;
-        		}
-        		
+
         		if ( this.nodeName == 'SELECT' ) {
         			if (value == null) {
         				value = '';
@@ -209,10 +217,13 @@ var aerogear = {
 	        			break;
 	
 	        		default:
-	        			this.value = value;
+    					if ( value != null && typeof value == 'object' ) {
+    						this.value = value.toString;
+    					} else {
+    						this.value = value;
+    					}
 	        	}
         	});
         });
     },
-
 };

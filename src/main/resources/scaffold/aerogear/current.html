@@ -19,7 +19,7 @@
 				<form name="search-form" id="search-form" data-ajax="false">
 					<fieldset>
 						@{searchMetawidget}
-						<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+						<div data-role="controlgroup" data-type="horizontal" class="buttons">
 							<input type="submit" name="search" onclick="return aerogear.search()" data-icon="search" value="Search"/>
 						</div>
 					</fieldset>
@@ -44,7 +44,7 @@
 			<section data-role="content">
 				<fieldset id="view-fieldset">
 					@{viewMetawidget}
-					<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+					<div data-role="controlgroup" data-type="horizontal" class="buttons">
 						<a href="#create-article" data-role="button" data-icon="gear">Edit</a>
 						<a href="#search-article" data-role="button" data-icon="back">Cancel</a>
 					</div>
@@ -71,7 +71,7 @@
 					<fieldset id="create-fieldset">
 						@{entityMetawidget}
 						<div id="formMsgs"></div>
-						<div data-role="controlgroup" data-type="horizontal" style="text-align: center">
+						<div data-role="controlgroup" data-type="horizontal" class="buttons">
 							<input type="submit" name="save" onclick="return aerogear.update()" data-icon="plus" value="Save"/>
 							<a data-role="button" data-icon="delete" onclick="return aerogear.remove()">Delete</a>
 							<a href="#search-article" data-role="button" data-icon="back">Cancel</a>

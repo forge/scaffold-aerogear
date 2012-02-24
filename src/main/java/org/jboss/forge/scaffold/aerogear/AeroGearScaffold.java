@@ -260,7 +260,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
          JavaClass objectMapperProvider = JavaParser.parse(JavaClass.class,
                   this.objectMapperProviderTemplate.render(context));
          objectMapperProvider.setPackage(serviceBean.getPackage());
-         result.add(ScaffoldUtil.createOrOverwrite(this.prompt, java.getJavaResource(objectMapperProvider),
+         result.add(ScaffoldUtil.createOrOverwrite(this.prompt, java.getJavaResource(serviceBean.getPackage() + "/ObjectMapperProvider.java"),
                   objectMapperProvider.toString(),
                   true));
 

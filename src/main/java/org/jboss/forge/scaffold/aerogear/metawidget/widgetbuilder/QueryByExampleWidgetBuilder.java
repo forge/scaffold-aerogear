@@ -74,6 +74,20 @@ public class QueryByExampleWidgetBuilder
          return toReturn;
       }
 
+      // boolean
+
+      if (boolean.class.equals(clazz))
+      {
+         StaticJavaStub toReturn = new StaticJavaStub();
+         toReturn.getChildren().add(
+                  new JavaStatement("boolean " + name + " = search.get" + StringUtils.capitalize(name) + "()"));
+         JavaStatement ifNotEmpty = new JavaStatement("if (" + name + ")");
+         ifNotEmpty.getChildren().add(
+                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
+         toReturn.getChildren().add(ifNotEmpty);
+         return toReturn;
+      }
+
       // int
 
       if (int.class.equals(clazz))

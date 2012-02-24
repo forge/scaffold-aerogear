@@ -1,18 +1,8 @@
-/* Core styles for the mobile version of the application */
 body {
    margin: 0;
    padding: 0;
    font-family: Verdana, sans-serif;
    font-size: 0.9em;
-}
-
-p {
-   margin-left: 8px;
-   margin-right: 8px;
-}
-
-code {
-   font-size: 1.1em;
 }
 
 a {
@@ -26,12 +16,6 @@ a:hover {
 }
 
 /* Header and footer styles */
-
-.header_logo{
-   float: left;
-   margin-top: 3px;
-   margin-left: 8px;
-}
 
 .footer_left {
    float: left;
@@ -49,7 +33,7 @@ a:hover {
 
 /* Content styles */
 
-.ui-mobile fieldset{
+fieldset{
    padding-left: 5px;
    padding-right: 5px;
 }
@@ -59,9 +43,9 @@ span.invalid {
    color: red;
 }
 
-span.success {
-   padding-left: 3px;
-   color: green;
+.buttons {
+	text-align: center;
+	margin-top: 10px;
 }
 
 #search-results {
@@ -71,15 +55,13 @@ span.success {
 }
 
 #search-results td {
-   height: 2em;
-   padding-left: 6px;
+   padding: 4px;
    font-size: 11px;
 }
 
 #search-results th {
    font-weight: normal;
-   padding: 0 10px 0 5px;
-   border-bottom: #999999 dotted 1px;
+   padding: 4px;
 }
 
 #search-results thead {
@@ -97,7 +79,6 @@ span.success {
    text-align: center;
 }
 
-/* Using new CSS3 selectors for styling*/
 #search-results tbody tr:nth-child(odd) {
    background: #f4f3f3;
 }
@@ -111,7 +92,13 @@ span.success {
    cursor: pointer;
 }
 
+#view-fieldset label {	
+	display: block;
+    font-size: 16px;
+}
+
 #view-fieldset output {
+	display: block;
 	font-size: 1.25em;
 	padding-bottom: 10px;
 }

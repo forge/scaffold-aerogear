@@ -128,7 +128,7 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
                "\t\t\t\t\t\t\t<label for=\"address\">Address:</label>\r\n" +
                "\t\t\t\t\t\t\t<input id=\"address\" name=\"address\" type=\"search\"/>\r\n" +
                "\t\t\t\t\t\t</div>\n" +
-               "\t\t\t\t\t\t<div data-role=\"controlgroup\" data-type=\"horizontal\" style=\"text-align: center\">\n" +
+               "\t\t\t\t\t\t<div data-role=\"controlgroup\" data-type=\"horizontal\" class=\"buttons\">\n" +
                "\t\t\t\t\t\t\t<input type=\"submit\" name=\"search\" onclick=\"return aerogear.search()\" data-icon=\"search\" value=\"Search\"/>\n" +
                "\t\t\t\t\t\t</div>\n" +
                "\t\t\t\t\t</fieldset>\n" +

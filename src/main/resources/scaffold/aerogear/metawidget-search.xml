@@ -65,7 +65,7 @@
 		</widgetProcessors>
 
 		<layout>
-			<htmlDivLayout xmlns="java:org.metawidget.statically.html.layout"/>
+			<htmlDivLayout xmlns="java:org.jboss.forge.scaffold.aerogear.metawidget.layout"/>
 		</layout>
 		
 	</staticHtmlMetawidget>			

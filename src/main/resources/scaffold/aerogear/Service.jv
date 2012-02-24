@@ -1,4 +1,3 @@
-package com.test.rest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,14 +155,8 @@ public class @{entity.getName()}Service {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Map<Long,String> getAll() {
+	public List<@{entity.getName()}> getAll() {
 		
-		Map<Long,String> all = new HashMap<Long,String>();
-		
-		for( @{entity.getName()} item : getPageItems( null )) {
-			all.put(item.getId(), item.toString());
-		}
-		
-		return all;
+		return getPageItems( null );
 	}
 }
