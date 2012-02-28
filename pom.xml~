@@ -31,6 +31,12 @@
 			<artifactId>forge-javaee-api</artifactId>
 			<version>${forge.version}</version>
 			<scope>provided</scope>
+		</dependency>		
+		<dependency>
+			<groupId>org.jboss.forge</groupId>
+			<artifactId>forge-javaee-impl</artifactId>
+			<version>${forge.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.forge</groupId>
