@@ -52,6 +52,7 @@ import org.jboss.forge.scaffold.util.ScaffoldUtil;
 import org.jboss.forge.shell.ShellPrompt;
 import org.jboss.forge.shell.plugins.Alias;
 import org.jboss.forge.shell.plugins.RequiresFacet;
+import org.jboss.forge.shell.util.Streams;
 import org.jboss.forge.spec.javaee.CDIFacet;
 import org.jboss.forge.spec.javaee.EJBFacet;
 import org.jboss.forge.spec.javaee.PersistenceFacet;
@@ -379,8 +380,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
       if (this.serviceTemplate == null)
       {
          this.serviceTemplate = this.compiler.compile(SERVICE_TEMPLATE);
-         String template = String.valueOf(this.serviceTemplate
-                  .getCompiledTemplate().getTemplate());
+         String template = Streams.toString(this.serviceTemplate.getSourceTemplateResource().getInputStream());
          this.serviceQbeMetawidgetIndent = parseIndent(template, "@{qbeMetawidget}");
       }
       if (this.activatorTemplate == null)
@@ -394,8 +394,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
       if (this.currentTemplate == null)
       {
          this.currentTemplate = this.compiler.compile(CURRENT_TEMPLATE);
-         String template = String.valueOf(this.currentTemplate
-                  .getCompiledTemplate().getTemplate());
+         String template = Streams.toString(this.currentTemplate.getSourceTemplateResource().getInputStream());
          this.currentTemplateEntityMetawidgetIndent = parseIndent(template, "@{entityMetawidget}");
          this.currentTemplateViewMetawidgetIndent = parseIndent(template, "@{viewMetawidget}");
          this.currentTemplateSearchMetawidgetIndent = parseIndent(template, "@{searchMetawidget}");
@@ -404,8 +403,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
       if (this.indexTemplate == null)
       {
          this.indexTemplate = this.compiler.compile(INDEX_TEMPLATE);
-         String template = String.valueOf(this.indexTemplate
-                  .getCompiledTemplate().getTemplate());
+         String template = Streams.toString(this.indexTemplate.getSourceTemplateResource().getInputStream());
          this.indexTemplateIndent = parseIndent(template, "@{navigation}");
       }
    }
