@@ -40,6 +40,7 @@ public class ForgeConfigReader
    //
 
    private static final String PROJECT_ELEMENT_NAME = "forgeProject";
+
    //
    // Private members
    //
@@ -66,7 +67,6 @@ public class ForgeConfigReader
    @Override
    public InputStream openResource(String resource)
    {
-
       return getClass().getResourceAsStream(resource);
    }
 
@@ -79,9 +79,9 @@ public class ForgeConfigReader
     */
 
    @Override
-   protected Class<?> lookupClass(String uri, String localName, ClassLoader classLoader)
+   protected Class<?> lookupClass(String className, ClassLoader classLoader)
    {
-      return lookupClass(uri, localName, getClass().getClassLoader());
+      return super.lookupClass(className, getClass().getClassLoader());
    }
 
    @Override
