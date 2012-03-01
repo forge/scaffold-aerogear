@@ -64,14 +64,25 @@ public class ForgeConfigReader
     */
 
    @Override
-   public InputStream openResource( String resource ) {
+   public InputStream openResource(String resource)
+   {
 
-      return getClass().getResourceAsStream( resource );
+      return getClass().getResourceAsStream(resource);
    }
 
    //
    // Protected methods
    //
+
+   /**
+    * Overridden to support JBoss Modules.
+    */
+
+   @Override
+   protected Class<?> lookupClass(String uri, String localName, ClassLoader classLoader)
+   {
+      return lookupClass(uri, localName, getClass().getClassLoader());
+   }
 
    @Override
    protected boolean isNative(String name)
