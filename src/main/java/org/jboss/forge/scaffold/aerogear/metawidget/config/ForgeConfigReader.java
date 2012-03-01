@@ -21,6 +21,8 @@
  */
 package org.jboss.forge.scaffold.aerogear.metawidget.config;
 
+import java.io.InputStream;
+
 import org.jboss.forge.project.Project;
 import org.metawidget.config.impl.BaseConfigReader;
 
@@ -51,6 +53,20 @@ public class ForgeConfigReader
    public ForgeConfigReader(Project project)
    {
       this.project = project;
+   }
+
+   //
+   // Public methods
+   //
+
+   /**
+    * Overridden to support JBoss Modules.
+    */
+
+   @Override
+   public InputStream openResource( String resource ) {
+
+      return getClass().getResourceAsStream( resource );
    }
 
    //
