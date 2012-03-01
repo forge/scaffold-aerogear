@@ -179,19 +179,19 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
 
       this.entityMetawidget = new StaticHtmlMetawidget();
       this.entityMetawidget.setConfigReader(configReader);
-      this.entityMetawidget.setConfig("scaffold/aerogear/metawidget-entity.xml");
+      this.entityMetawidget.setConfig("/scaffold/aerogear/metawidget-entity.xml");
 
       this.searchMetawidget = new StaticHtmlMetawidget();
       this.searchMetawidget.setConfigReader(configReader);
-      this.searchMetawidget.setConfig("scaffold/aerogear/metawidget-search.xml");
+      this.searchMetawidget.setConfig("/scaffold/aerogear/metawidget-search.xml");
 
       this.serviceMetawidget = new StaticHtmlMetawidget();
       this.serviceMetawidget.setConfigReader(configReader);
-      this.serviceMetawidget.setConfig("scaffold/aerogear/metawidget-service.xml");
+      this.serviceMetawidget.setConfig("/scaffold/aerogear/metawidget-service.xml");
 
       this.qbeMetawidget = new StaticJavaMetawidget();
       this.qbeMetawidget.setConfigReader(configReader);
-      this.qbeMetawidget.setConfig("scaffold/aerogear/metawidget-qbe.xml");
+      this.qbeMetawidget.setConfig("/scaffold/aerogear/metawidget-qbe.xml");
    }
 
    @Override
