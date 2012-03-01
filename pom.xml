@@ -50,6 +50,19 @@
 			<version>${metawidget.version}</version>
 		</dependency>
 
+		<!-- Needed for Inspectors -->
+
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.1.Final</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.validation</groupId>
+		    <artifactId>validation-api</artifactId>
+		    <version>1.0.0.GA</version>		
+		</dependency>
+
 		<!-- Testing -->
 
 		<dependency>
