@@ -509,7 +509,8 @@ public class ForgePropertyStyle
 
          if (annotation != null)
          {
-            T annotationProxy = AnnotationProxy.newInstance(annotation);
+            @SuppressWarnings("unchecked")
+            T annotationProxy = (T) AnnotationProxy.newInstance(annotation);
             return annotationProxy;
          }
 
