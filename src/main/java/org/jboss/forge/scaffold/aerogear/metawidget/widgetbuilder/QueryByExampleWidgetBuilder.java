@@ -83,7 +83,7 @@ public class QueryByExampleWidgetBuilder
                   new JavaStatement("boolean " + name + " = search.get" + StringUtils.capitalize(name) + "()"));
          JavaStatement ifNotEmpty = new JavaStatement("if (" + name + ")");
          ifNotEmpty.getChildren().add(
-                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
+                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\"), " + name + "))"));
          toReturn.getChildren().add(ifNotEmpty);
          return toReturn;
       }
@@ -97,7 +97,7 @@ public class QueryByExampleWidgetBuilder
                   new JavaStatement("int " + name + " = search.get" + StringUtils.capitalize(name) + "()"));
          JavaStatement ifNotEmpty = new JavaStatement("if (" + name + " != 0)");
          ifNotEmpty.getChildren().add(
-                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
+                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\"), " + name + "))"));
          toReturn.getChildren().add(ifNotEmpty);
          return toReturn;
       }
@@ -113,7 +113,7 @@ public class QueryByExampleWidgetBuilder
          toReturn.getChildren().add(getValue);
          JavaStatement ifNotEmpty = new JavaStatement("if (" + name + " != null && " + name + ".getId() != null)");
          ifNotEmpty.getChildren().add(
-                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\")," + name + "))"));
+                  new JavaStatement("predicatesList.add(builder.equal(root.get(\"" + name + "\"), " + name + "))"));
          toReturn.getChildren().add(ifNotEmpty);
          return toReturn;
       }
