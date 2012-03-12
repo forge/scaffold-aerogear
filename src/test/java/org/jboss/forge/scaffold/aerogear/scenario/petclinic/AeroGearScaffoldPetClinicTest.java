@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.project.Project;
+import org.jboss.forge.project.facets.JavaSourceFacet;
 import org.jboss.forge.project.facets.WebResourceFacet;
 import org.jboss.forge.resources.FileResource;
 import org.jboss.forge.scaffold.aerogear.AbstractAeroGearScaffoldTest;
@@ -87,6 +88,7 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
       getShell()
                .execute("scaffold from-entity com.test.model.*");
 
+      JavaSourceFacet java = project.getFacet(JavaSourceFacet.class);
       WebResourceFacet web = project.getFacet(WebResourceFacet.class);
 
       // index.html
@@ -194,6 +196,15 @@ public class AeroGearScaffoldPetClinicTest extends AbstractAeroGearScaffoldTest
 
       Assert.assertTrue(contents.contains( "<artifactId>jackson-jaxrs</artifactId>" ));
       Assert.assertTrue(contents.contains( "<version>1.6.3</version>" ));
+
+      // ObjectMapperProvider
+
+      FileResource<?> customerBean = java.getJavaResource("/com/test/rest/ObjectMapperProvider.java");
+      Assert.assertTrue(customerBean.exists());
+      contents = Streams.toString(customerBean.getResourceInputStream());
+
+      Assert.assertTrue(contents.contains("package com.test.rest;"));
+      Assert.assertTrue(contents.contains("public class ObjectMapperProvider"));
 
       // Deploy to a real container and test
 

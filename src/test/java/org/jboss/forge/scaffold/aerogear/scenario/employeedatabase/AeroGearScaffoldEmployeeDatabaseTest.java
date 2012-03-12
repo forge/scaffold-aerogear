@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.project.Project;
+import org.jboss.forge.project.facets.JavaSourceFacet;
 import org.jboss.forge.project.facets.WebResourceFacet;
 import org.jboss.forge.resources.FileResource;
 import org.jboss.forge.scaffold.aerogear.AbstractAeroGearScaffoldTest;
@@ -68,6 +69,7 @@ public class AeroGearScaffoldEmployeeDatabaseTest extends AbstractAeroGearScaffo
       getShell()
                .execute("scaffold from-entity com.test.model.*");
 
+      JavaSourceFacet java = project.getFacet(JavaSourceFacet.class);
       WebResourceFacet web = project.getFacet(WebResourceFacet.class);
 
       // index.html
@@ -258,6 +260,15 @@ public class AeroGearScaffoldEmployeeDatabaseTest extends AbstractAeroGearScaffo
                "\t\t\t\t\t\t</div>\n";
 
       Assert.assertTrue(contents.contains(metawidget));
+
+      // ObjectMapperProvider
+
+      FileResource<?> customerBean = java.getJavaResource("/com/test/rest/ObjectMapperProvider.java");
+      Assert.assertTrue(customerBean.exists());
+      contents = Streams.toString(customerBean.getResourceInputStream());
+
+      Assert.assertTrue(contents.contains("package com.test.rest;"));
+      Assert.assertTrue(contents.contains("public class ObjectMapperProvider"));
 
       getShell().execute("build");
    }
