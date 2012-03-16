@@ -155,9 +155,9 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    //
 
    @Override
-   public List<Resource<?>> setup(final Resource<?> template, final boolean overwrite)
+   public List<Resource<?>> setup(String targetDir, final Resource<?> template, final boolean overwrite)
    {
-      List<Resource<?>> resources = generateIndex(template, overwrite);
+      List<Resource<?>> resources = generateIndex(targetDir, template, overwrite);
 
       return resources;
    }
@@ -195,7 +195,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    }
 
    @Override
-   public List<Resource<?>> generateFromEntity(final Resource<?> template, final JavaClass entity,
+   public List<Resource<?>> generateFromEntity(String targetDir, final Resource<?> template, final JavaClass entity,
             final boolean overwrite)
    {
       // Track the list of resources generated
@@ -260,7 +260,8 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
          JavaClass objectMapperProvider = JavaParser.parse(JavaClass.class,
                   this.objectMapperProviderTemplate.render(context));
          objectMapperProvider.setPackage(serviceBean.getPackage());
-         result.add(ScaffoldUtil.createOrOverwrite(this.prompt, java.getJavaResource(serviceBean.getPackage() + "/ObjectMapperProvider.java"),
+         result.add(ScaffoldUtil.createOrOverwrite(this.prompt,
+                  java.getJavaResource(serviceBean.getPackage() + "/ObjectMapperProvider.java"),
                   objectMapperProvider.toString(),
                   true));
 
@@ -289,14 +290,14 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    }
 
    @Override
-   public List<Resource<?>> generateIndex(final Resource<?> template, final boolean overwrite)
+   public List<Resource<?>> generateIndex(String targetDir, final Resource<?> template, final boolean overwrite)
    {
       List<Resource<?>> result = new ArrayList<Resource<?>>();
       WebResourceFacet web = this.project.getFacet(WebResourceFacet.class);
 
       loadTemplates();
 
-      generateTemplates(overwrite);
+      generateTemplates(targetDir, overwrite);
 
       // Static resources
 
@@ -348,7 +349,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    }
 
    @Override
-   public List<Resource<?>> getGeneratedResources()
+   public List<Resource<?>> getGeneratedResources(String targetDir)
    {
       throw new RuntimeException("Not yet implemented!");
    }
@@ -366,7 +367,7 @@ public class AeroGearScaffold extends BaseJavaEEFacet implements ScaffoldProvide
    }
 
    @Override
-   public List<Resource<?>> generateTemplates(final boolean overwrite)
+   public List<Resource<?>> generateTemplates(String targetDir, final boolean overwrite)
    {
       return null;
    }
